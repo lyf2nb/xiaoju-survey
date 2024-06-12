@@ -110,7 +110,7 @@ public class AuthServiceImplTest {
         expectedUserVo.setUsername("testUser");
 
         Mockito.when(mongoRepository.findById(Mockito.eq("testCaptchaId"), Mockito.eq(Captcha.class))).thenReturn(captcha);
-        Mockito.when(userService.loadUserByUsernameAndPassword(Mockito.eq("testUser"), Mockito.eq("testPassword"))).thenReturn(user);
+        Mockito.when(userService.findUserByUsernameAndPassword(Mockito.eq("testUser"), Mockito.eq("testPassword"))).thenReturn(user);
         Token testToken = new Token();
         testToken.setToken("testToken");
         Mockito.when(jwtTokenUtil.generateToken(Mockito.eq(userParam))).thenReturn(testToken);
@@ -133,7 +133,7 @@ public class AuthServiceImplTest {
         captcha.setText("testCaptcha");
 
         Mockito.when(mongoRepository.findById(Mockito.eq("testCaptchaId"), Mockito.eq(Captcha.class))).thenReturn(captcha);
-        Mockito.when(userService.loadUserByUsernameAndPassword(Mockito.eq("testUser"), Mockito.eq("wrongPassword"))).thenThrow(new ServiceException("Invalid credentials", 401));
+        Mockito.when(userService.findUserByUsernameAndPassword(Mockito.eq("testUser"), Mockito.eq("wrongPassword"))).thenThrow(new ServiceException("Invalid credentials", 401));
 
         ServiceException exception = assertThrows(ServiceException.class, () -> authService.login(userParam));
         assertEquals("Invalid credentials", exception.getMessage());

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User loadUserByUsernameAndPassword(String username, String password) {
+    public User findUserByUsernameAndPassword(String username, String password) {
         Query query = new Query();
         String encryptPassword = AuthUtil.encryptPassword(password, username);
         query.addCriteria(Criteria.where("username").is(username).and("password").is(encryptPassword));
@@ -41,6 +41,18 @@ public class UserServiceImpl implements UserService {
         User user = mongoRepository.findOne(query, User.class);
         if (ObjectUtils.isEmpty(user)) {
             throw new ServiceException(RespErrorCode.USER_PASSWORD_ERROR.getMessage(), RespErrorCode.USER_PASSWORD_ERROR.getCode());
+        }
+        return user;
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("username").is(username));
+        //查询用户并返回
+        User user = mongoRepository.findOne(query, User.class);
+        if (ObjectUtils.isEmpty(user)) {
+            throw new ServiceException(RespErrorCode.USER_NOT_EXISTS.getMessage(), RespErrorCode.USER_NOT_EXISTS.getCode());
         }
         return user;
     }

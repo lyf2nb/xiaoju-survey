@@ -88,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
         //验证码
         checkCaptchaIsCorrect(userParam.getCaptchaId(), userParam.getCaptcha());
         //用户验证
-        userService.loadUserByUsernameAndPassword(userParam.getUsername(), userParam.getPassword());
+        userService.findUserByUsernameAndPassword(userParam.getUsername(), userParam.getPassword());
         //生成token
         return createTokenAndDeleteCaptcha(userParam);
     }

@@ -40,13 +40,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         Map<String, Claim> claims = jwt.getClaims();
         //获取用户名,密码
         String username = claims.get("username").asString();
-        String password = claims.get("password").asString();
         //判空
-        if (ObjectUtils.isEmpty(username) || ObjectUtils.isEmpty(password)) {
+        if (ObjectUtils.isEmpty(username)) {
             //token超时
             throw new ServiceException(RespErrorCode.USER_CREDENTIALS_ERROR.getMessage(), RespErrorCode.USER_CREDENTIALS_ERROR.getCode());
         }
-        User user = userService.loadUserByUsernameAndPassword(username, password);
+        User user = userService.findUserByUsername(username);
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 }

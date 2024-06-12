@@ -20,10 +20,10 @@ import java.util.regex.Pattern;
 @Component
 public class JwtTokenUtil {
 
-    @Value("${XIAOJU_SURVEY_JWT_EXPIRES_IN}")
+    @Value("${xiaoju.survey.jwt.expires.in}")
     private long expirationTime;
 
-    @Value("${XIAOJU_SURVEY_JWT_SECRET}")
+    @Value("${xiaoju.survey.jwt.secret}")
     private String secret;
 
     private static final long HOUR_MILLISECOND = 60 * 60 * 1000;
@@ -59,7 +59,6 @@ public class JwtTokenUtil {
         Date expiryDate = new Date(now.getTime() + expirationTime * HOUR_MILLISECOND);
         String token = JWT.create()
                 .withClaim("username", user.getUsername())
-                .withClaim("password", user.getPassword())
                 .withExpiresAt(expiryDate)
                 .withJWTId(UUID.randomUUID().toString())
                 .sign(Algorithm.HMAC256(secret));
